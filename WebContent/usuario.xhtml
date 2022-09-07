@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Initial - Page</title>
+</h:head>
+<h:body>
+
+	<ui:include src="/template.xhtml"/>
+
+	<h:form enctype="multipart/form-data">
+
+		<div id="conteudo" align="center" style="border-style: solid; border-width: 3px; width: 40%; margin: 100px auto 100px auto;">
+
+			<h:messages/>
+
+			<h1>PÁGINA INICIAL</h1>
+
+			<h:graphicImage library="img" name="g.jpg" width="60" />
+
+			<h2>CADASTRO DE USUÁRIOS</h2>
+
+			<h:panelGrid columns="2">
+				<h:outputLabel for="id" value="ID: " />
+				<h:inputText id="id" value="#{backing_usuario.usuario.id}"
+					readonly="true" pt:placeholder="ID"/>
+				<h:outputLabel for="nome" value="Nome: " />
+				<h:inputText id="nome" value="#{backing_usuario.usuario.nome}" />
+				<h:outputLabel for="sobrenome" value="Sobrenome: " />
+				<h:inputText id="sobrenome"
+					value="#{backing_usuario.usuario.sobrenome}" />
+				<h:outputLabel for="idade" value="Idade: " />
+				<h:inputText id="idade" value="#{backing_usuario.usuario.idade}" />
+				<h:outputLabel for="dataNascimento" value="Data de nascimento: " />
+				<h:inputText id="dataNascimento" value="#{backing_usuario.usuario.dataNascimento}" >
+					<f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-03:00" />
+				</h:inputText>
+				<h:outputLabel for="sexo" value="Sexo: " />
+				<h:selectOneRadio id="sexo" value="#{backing_usuario.usuario.sexo}">
+					<f:selectItem itemLabel="Masculino" itemValue="M" />
+					<f:selectItem itemLabel="Feminino" itemValue="F" />
+				</h:selectOneRadio>
+				<h:outputLabel for="nivel" value="Nível: " />
+				<h:selectOneMenu id="nivel" value="#{backing_usuario.usuario.nivel}">
+					<f:selectItem itemLabel="[SELECIONE]" noSelectionOption="true" />
+					<f:selectItem itemLabel="Júnior" itemValue="JUNIOR" />
+					<f:selectItem itemLabel="Pleno" itemValue="PLENO" />
+					<f:selectItem itemLabel="Sênior" itemValue="SENIOR" />
+				</h:selectOneMenu>
+				<h:outputLabel for="habilidades" value="Habilidades: " />
+				<h:selectManyMenu id="habilidades"
+					value="#{backing_usuario.usuario.habilidades}" style="height:60px;">
+					<f:selectItem itemValue="JAVA" />
+					<f:selectItem itemValue="JSF" />
+					<f:selectItem itemValue="JPA" />
+				</h:selectManyMenu>
+				<h:outputLabel for="ativo" value="Ativo: " />
+				<h:selectBooleanCheckbox id="ativo"
+					value="#{backing_usuario.usuario.ativo}" />
+				<h:outputLabel for="perfil" value="Perfil: " />
+				<h:selectOneMenu id="perfil"
+					value="#{backing_usuario.usuario.perfil}">
+					<f:selectItem itemLabel="[SELECIONE]" noSelectionOption="true" />
+					<f:selectItem itemLabel="Administrador" itemValue="ADMINISTRATOR" />
+					<f:selectItem itemLabel="Padrão" itemValue="DEFAULT" />
+				</h:selectOneMenu>
+			<h:outputLabel for="cep" value="CEP: " />
+			<h:inputText id="cep" value="#{backing_usuario.usuario.cep}" >
+				<f:ajax event="blur" execute="@this" listener="#{backing_usuario.carregaCEP}" 
+				render="bairro"/>
+			</h:inputText>
+			<h:outputLabel for="bairro" value="Bairro: " />
+			<h:inputText id="bairro" value="#{backing_usuario.usuario.bairro}" />
+			<h:outputLabel for="estado" value="Estado: "/>
+			<h:selectOneMenu id="estado" value="#{backing_usuario.usuario.estado}" immediate="true" converter="estadoConverter">
+				<f:selectItem itemLabel="[SELECIONE]" noSelectionOption="true" />
+				<f:selectItems value="#{backing_usuario.estados}" />
+				<f:ajax event="change" execute="@this" listener="#{backing_usuario.carregaCidades}" render="cidade"/>
+			</h:selectOneMenu>
+			<h:outputLabel for="cidade" value="Cidade: "/>
+			<h:selectOneMenu id="cidade" value="#{backing_usuario.usuario.cidade}" converter="cidadeConverter">
+				<f:selectItems value="#{backing_usuario.cidades}" />
+			</h:selectOneMenu>
+			<h:outputLabel for="arquivoImg" value="Imagem: "/>
+			<h:inputFile id="arquivoImg" value="#{backing_usuario.arquivoImg}" />
+			</h:panelGrid>		
+
+			<h3>DEFINA UM LOGIN E SENHA</h3>
+
+			<h:panelGrid columns="2"
+				rendered="#{backing_usuario.acessoPermitido('ADMINISTRATOR')}">
+				<h:outputLabel for="login" value="Login: " />
+				<h:inputText id="login" value="#{backing_usuario.usuario.login}" />
+				<h:outputLabel for="senha" value="Senha: " />
+				<h:inputSecret id="senha" value="#{backing_usuario.usuario.senha}" />
+			</h:panelGrid>
+
+			<h:commandButton value="Novo" action="#{backing_usuario.novo}" immediate="true"/>
+			<h:commandButton value="Salvar" action="#{backing_usuario.salvar}"/>
+			<h:commandButton value="Remover" action="#{backing_usuario.deletar}" immediate="true"/>
+
+			<h:dataTable value="#{backing_usuario.usuarios}" var="usuario"
+				border="1" style="margin-bottom: 30px;">
+				<f:facet name="header">LISTA DE PESSOAS CADASTRADAS</f:facet>
+				<h:column>
+					<f:facet name="header">NOME</f:facet>
+					<h:outputText value="#{usuario.nome}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">SOBRENOME</f:facet>
+					<h:outputText value="#{usuario.sobrenome}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">IDADE</f:facet>
+					<h:outputText value="#{usuario.idade}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">IMAGEM</f:facet>
+					<h:commandLink actionListener="#{backing_usuario.download}" immediate="true">
+						<h:graphicImage width="60" height="60" value="#{usuario.miniImg}" />
+						<f:param name="fileDownloadId" value="#{usuario.id}" />
+					</h:commandLink>
+				</h:column>
+				<h:column>
+					<f:facet name="header">EDITAR</f:facet>
+					<h:commandLink action="#{backing_usuario.editar}" immediate="true">
+						<f:setPropertyActionListener value="#{usuario}"
+							target="#{backing_usuario.usuario}" />
+						<h:graphicImage library="img" name="editar.png" width="20" />
+					</h:commandLink>
+				</h:column>
+				<h:column>
+					<f:facet name="header">EXCLUIR</f:facet>
+					<h:commandLink action="#{backing_usuario.deletar}" immediate="true">
+						<f:setPropertyActionListener value="#{usuario}"
+							target="#{backing_usuario.usuario}" />
+						<h:graphicImage library="img" name="excluir.jpg" width="20" />
+					</h:commandLink>
+				</h:column>
+			</h:dataTable>
+		</div>
+	</h:form>
+</h:body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Index - Page</title>
+</h:head>
+<h:body>
+	<h:form>
+		<div id="conteudo" align="center"
+			style="border-style: solid; border-width: 3px; width: 40%; margin: 100px auto 100px auto;">
+			<h:panelGrid columns="2" style="margin: 50px 50px;">
+				<h:outputLabel for="login" value="Login: " />
+				<h:inputText id="login" value="#{backing_usuario.usuario.login}" />
+				<h:outputLabel for="senha" value="Senha: " />
+				<h:inputSecret id="senha" value="#{backing_usuario.usuario.senha}" />
+				<h:commandButton value="Logar" action="#{backing_usuario.logar}" />
+			</h:panelGrid>
+		</div>
+	</h:form>
+</h:body>
+</html>

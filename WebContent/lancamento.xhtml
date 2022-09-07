@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+	<title>Lançamento - Page</title>
+</h:head>
+<h:body>
+	
+	<ui:include src="/template.xhtml"/>
+
+	<h:form>
+
+		<div id="conteudo" align="center" style="border-style: solid; border-width: 3px; width: 40%; margin: 100px auto 100px auto;">
+
+			<h1>LANÇAMENTO</h1>
+
+			<h:graphicImage library="img" name="g.jpg" width="60" />
+
+			<h2>CADASTRO DE LANÇAMENTOS</h2>
+
+			<h:panelGrid columns="2">
+				<h:outputLabel for="id" value="ID: " />
+				<h:inputText id="id" value="#{backing_lancamento.lancamento.id}"
+					readonly="true" pt:placeholder="ID"/>
+				<h:outputLabel for="numeroNF" value="NF: " />
+				<h:inputText id="numeroNF"
+					value="#{backing_lancamento.lancamento.numeroNF}" />
+				<h:outputLabel for="empresaOrigem" value="Empresa de Origem: " />
+				<h:inputText id="empresaOrigem"
+					value="#{backing_lancamento.lancamento.empresaOrigem}" />
+				<h:outputLabel for="empresaDestino" value="Empresa de Destino: " />
+				<h:inputText id="empresaDestino"
+					value="#{backing_lancamento.lancamento.empresaDestino}" />
+			</h:panelGrid>
+
+			<h:commandButton value="Novo" action="#{backing_lancamento.novo}" />
+			<h:commandButton value="Salvar" action="#{backing_lancamento.salvar}" />
+			<h:commandButton value="Remover" action="#{backing_lancamento.deletar}" />
+			
+			<h:dataTable value="#{backing_lancamento.lancamentos}" var="lancamento"
+				border="1" style="margin-bottom: 30px;">
+				<f:facet name="header">LISTA DE LANÇAMENTOS CADASTRADOS</f:facet>
+				<h:column>
+					<f:facet name="header">NÚMERO</f:facet>
+					<h:outputText value="#{lancamento.numeroNF}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">ORIGEM</f:facet>
+					<h:outputText value="#{lancamento.empresaOrigem}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">DESTINO</f:facet>
+					<h:outputText value="#{lancamento.empresaDestino}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">LANÇAMENTO</f:facet>
+					<h:commandLink>
+						<f:setPropertyActionListener value="#{lancamento}"
+							target="#{backing_lancamento.lancamento}" />
+						<h:graphicImage library="img" name="editar.png" width="20" />
+					</h:commandLink>
+				</h:column>
+				<h:column>
+					<f:facet name="header">EXCLUIR</f:facet>
+					<h:commandLink action="#{backing_lancamento.deletar}">
+						<f:setPropertyActionListener value="#{lancamento}"
+							target="#{backing_lancamento.lancamento}" />
+						<h:graphicImage library="img" name="excluir.jpg" width="20" />
+					</h:commandLink>
+				</h:column>
+			</h:dataTable>
+
+		</div>
+	</h:form>
+</h:body>
+</html>
